@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <h4>all trades</h4>
+    <div class="row">
+        {% for transaction in object_list %}
+            <div class="card m-1 border-secondary" style="width: 18rem;">
+                <img src="{{ transaction.card.image }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <hr>
+                    <h5 class="card-title">{{ transaction.card.name }} #{{ transaction.card.poke_id }}</h5>
+                    <hr>
+                    <p class="card-text">
+
+                    <ul class="list-group">
+                        <div class="row">
+                            Trade Offered by: {{ transaction.seller.user.username }}<br> Offered {{ transaction.datetime|timesince }} ago
+                            {% for elem in transaction.card.elements.all %}
+                                <div class="col-5 m-1">
+                                    <img src="{{ elem.image.path }}" class="img-fluid" alt="...">
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                    </ul>
+                    </p>
+                </div>
+                <a href="{% url 'transaction_view' transaction.id %}" class="card-text btn btn-danger">View current offers</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

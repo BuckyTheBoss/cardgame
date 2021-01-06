@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <h4>all available cards</h4>
+    <div class="row">
+        {% for object in object_list %}
+            <div class="card m-1 border-dark" style="width: 18rem;">
+                <img src="{{ object.image }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <hr>
+                    <h5 class="card-title">Pokemon: {{ object.name }} #{{ object.poke_id }}</h5>
+                    <hr>
+                    <p class="card-text">
+                    <ul class="list-group">
+                        <div class="row">
+
+                            {% for elem in object.elements.all %}
+                                <div class="col-5 m-1">
+                                    <img src="{{ elem.image.path }}" class="img-fluid" alt="...">
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

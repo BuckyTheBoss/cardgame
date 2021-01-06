@@ -1,0 +1,6 @@
+venv/
+db.sqlite3
+card_game/local_settings.py
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py

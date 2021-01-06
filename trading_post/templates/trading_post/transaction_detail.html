@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <h4>Trade</h4>
+    <div class="row">
+
+
+        <div class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="{{ object.card.image }}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Trade Offered by: {{ object.seller.user.username }}</h5>
+                        <p class="card-text">Card being offered: {{ object.card.name }}</p>
+                        <p class="card-text"><small class="text-muted">Offered {{ object.datetime|timesince }} ago</small></p>
+                        <div class="media">
+
+                            {% for elem in object.card.elements.all %}
+                                <img src="{{elem.image.path}}" class="mr-3" alt="...">
+
+                            {% endfor %}
+                        </div>
+
+                        {% if  request.user.profile != object.seller and object.status == 'O' %}
+                            <div class="card-footer mt-2">
+                                <form method="post" action="{% url 'create_offer' object.id %}">
+                                    <h5>Offer Trade</h5>
+                                    {{ form }}
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Offer</button>
+                                </form>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h4 class="col-12">Current Offers</h4>
+
+        {% for offer in object.offer_set.all %}
+            <div class="card col-3 m-4">
+                <img src="{{ offer.card.image }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Offered by: {% if request.user.profile == offer.buyer %}You{% else %}{{ offer.buyer.user.username }}{% endif %}</h5>
+                    <p class="card-text">Card being offered: {{ offer.card.name }}, Offer status: {{ offer.get_status_display }}</p>
+                        {% if request.user.profile == object.seller and offer.status == 'P' %}
+                            <a href="{% url 'eval_offer' offer.id 1 %}" class="btn btn-success">Accept</a>
+                            <a href="{% url 'eval_offer' offer.id 0 %}" class="btn btn-danger">Reject</a>
+                        {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <h5 class="col-12">No offers yet, {% if request.user.profile == object.seller %}Check again soon!{% else %}Be the first!{% endif %}</h5>
+        {% endfor %}
+
+
+
+    </div>
+{% endblock %}

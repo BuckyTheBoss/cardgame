@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="row">
+
+        <div class="card" style="width: 18rem;">
+            <img src="{{ object.image }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Pokemon: {{ object.name }} #{{ object.poke_id }}</h5>
+                <p class="card-text">
+                <h5>Types:</h5>
+                <ul class="list-group">
+                    {% for elem in object.elements.all %}
+                        <li class="list-group-item">{{ elem.name }}</li>
+                    {% endfor %}
+                </ul>
+                </p>
+                <a href="#" class="btn btn-primary">View current open trades</a>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
